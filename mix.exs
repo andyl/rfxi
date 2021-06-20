@@ -35,6 +35,7 @@ defmodule Rfxi.MixProject do
 
   defp deps do
     [
+      # --- phoenix dependencies 
       {:phoenix, "~> 1.5.9"},
       {:phoenix_live_view, "~> 0.15.1"},
       {:floki, ">= 0.30.0", only: :test},
@@ -46,18 +47,15 @@ defmodule Rfxi.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"}, 
-      # ----- 
+      # --- cli dependencies
       {:rfx, path: "~/src/rfx"},
-      {:optimus, "~> 0.2"}
+      {:optimus, "~> 0.2"}, 
+      # --- utilities
+      {:ex_doc, "~> 0.24", only: :dev, runtime: false},
+      {:mix_test_interactive, "~> 1.0", only: :dev, runtime: false}
     ]
   end
 
-  # Aliases are shortcuts or tasks specific to the current project.
-  # For example, to install project dependencies and perform other setup tasks, run:
-  #
-  #     $ mix setup
-  #
-  # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
       setup: ["deps.get", "cmd npm install --prefix assets"]
