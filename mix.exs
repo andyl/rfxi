@@ -38,7 +38,8 @@ defmodule Rfxi.MixProject do
     [
       main: "readme",
       extras: [
-        "README.md" 
+        "README.md",
+        "guides/integration.md"
       ]
     ]
   end
