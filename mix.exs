@@ -12,6 +12,7 @@ defmodule Rfxi.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       escript: escript(),
+      docs: docs(),
       deps: deps()
     ]
   end
@@ -30,6 +31,15 @@ defmodule Rfxi.MixProject do
     [
       main_module: RfxCli.Base,
       name: "rfx" 
+    ]
+  end
+
+  defp docs do
+    [
+      main: "readme",
+      extras: [
+        "README.md" 
+      ]
     ]
   end
 
