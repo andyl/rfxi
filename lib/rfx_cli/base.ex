@@ -41,6 +41,11 @@ defmodule RfxCli.Base do
           short: "-r",
           long: "--repl", 
           help: "Run in REPL mode"
+        ],
+        server: [
+          short: "-s",
+          long: "--server", 
+          help: "Run web server"
         ]
       ],
       subcommands: RfxCli.Oplst.subcommands()
@@ -57,6 +62,10 @@ defmodule RfxCli.Base do
 
   def execute(%{flags: %{repl: true}}) do
     RfxCli.Repl.start()
+  end
+
+  def execute(%{flags: %{server: true}}) do
+    RfxCli.Server.start()
   end
 
   def execute({[op_atom], parse_data}) do
