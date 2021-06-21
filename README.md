@@ -2,8 +2,8 @@
 
 Rfx Interface - User interfaces and APIs for [Rfx](https://github.com/andyl/rfx).
 
-Rfxi is designed to integrate with standalone processes: scripts, editors and
-development tools.
+Rfxi can be used interactively, and can interoperate with standalone processes:
+scripts, editors, dev tools, etc.
 
 This application has:
 - a CLI and a Web-server
@@ -32,8 +32,7 @@ About Rfxi:
 - A standalone app can add custom modules to the `Rfx.Ops` namespace.  Using
   runtime introspection they will be integrated into the CLI help menus just
   like built-in Rfx Operations. 
-- There is a repl built into the CLI.  At some point this might be useful to
-  support caching/indexing for performance.
+- There is a repl built into the CLI.
 - The repl uses the same option parser as the CLI.  
 - The web server can be started from a CLI command (eg `rfx server`) - similar
   to how it is done with Livebook
