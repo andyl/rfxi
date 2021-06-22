@@ -5,6 +5,10 @@ defmodule Rfxi.Application do
 
   use Application
 
+  def start do
+    start(:ok, :ok)
+  end
+
   def start(_type, _args) do
     children = [
       # Start the Telemetry supervisor

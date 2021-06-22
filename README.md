@@ -17,7 +17,7 @@ like scripts, editors, and dev tools.  Rfxi provides:
 - [ ] CLI: with Neovim Plugins using Lua/popen 
 - [ ] CLI: BASH Completion File
 - [ ] CLI: Command to start server
-- [ ] Document how to extend with custom Rfx Operations
+- [ ] Sample app with custom Rfx Operations
 - [ ] Web: End-User pages
 - [ ] Web: Restful JSON API
 - [ ] Web: WebSockets API

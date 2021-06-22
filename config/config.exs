@@ -13,6 +13,7 @@ config :rfxi, RfxiWeb.Endpoint,
   secret_key_base: "2bXJUHIElq8MeiPI2D/udnCx5vWVdeP2dWAhPJVuiY+S1iLxF8doRoxBMgzW7x4v",
   render_errors: [view: RfxiWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: Rfxi.PubSub,
+  # server: true, 
   live_view: [signing_salt: "XQMa67JV"]
 
 # Configures Elixir's Logger
