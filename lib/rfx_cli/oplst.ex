@@ -1,13 +1,20 @@
 defmodule RfxCli.Oplst do
 
-  alias Rfx.Catalog
   alias Rfx.Util.OpInfo
 
-  def proto do
-    Catalog.select("Proto")
+  @moduledoc """
+  Return a list of subcommands.
+  """
+
+  def proto_ops do
+    Rfx.Catalog.OpsCat.select_ops("Proto")
   end
 
-  def subcommands(list \\ proto()) do
+  def all_ops do
+    Rfx.Catalog.OpsCat.all_ops()
+  end
+
+  def subcommands(list \\ all_ops()) do
     list
     |> Enum.map(&option_block/1)
   end

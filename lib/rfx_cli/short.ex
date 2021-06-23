@@ -2,7 +2,7 @@ defmodule Short do
   @moduledoc false
 
   def noop do
-    RfxCli.Oplst.proto() |> Enum.reverse() |> List.first()
+    RfxCli.Oplst.proto_ops() |> Enum.reverse() |> List.first()
   end
 
   def argspec do

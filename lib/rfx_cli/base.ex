@@ -48,7 +48,7 @@ defmodule RfxCli.Base do
           help: "Run web server"
         ]
       ],
-      subcommands: RfxCli.Oplst.subcommands()
+      subcommands: RfxCli.Oplst.subcommands(RfxCli.Oplst.all_ops())
     )
   end
 
