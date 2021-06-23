@@ -32,14 +32,6 @@ defmodule RfxCli.Oplst do
 
   def common_options do
     [
-      args: [
-        target: [
-          value_name: "TARGET",
-          help: "Refactoring target",
-          required: true,
-          parser: :string
-        ]
-      ],
       options: [
         scope: [
           short: "-s",
@@ -48,11 +40,11 @@ defmodule RfxCli.Oplst do
           help: "Refactoring scope",
           parser: :string
         ], 
-        changeset: [
+        convert: [
           short: "-c",
-          long: "--changeset",
-          value_name: "CHANGESET",
-          help: "Output format",
+          long: "--changelist",
+          value_name: "OPTIONS",
+          help: "Changelist processing options",
           parser: :string
         ]
       ]
