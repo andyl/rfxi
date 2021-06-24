@@ -29,7 +29,8 @@ defmodule Rfxi.MixProject do
 
   def escript do
     [
-      main_module: RfxCli.Base,
+      # main_module: RfxCli.Base,
+      main_module: RfxCli.Server, 
       name: "rfx" 
     ]
   end
@@ -63,13 +64,16 @@ defmodule Rfxi.MixProject do
       {:optimus, "~> 0.2"}, 
       # --- utilities
       {:ex_doc, "~> 0.24", only: :dev, runtime: false},
-      {:mix_test_interactive, "~> 1.0", only: :dev, runtime: false}
+      {:mix_test_interactive, "~> 1.0", only: :dev, runtime: false}, 
+      {:mix_npm, "~> 0.3"}
     ]
   end
 
   defp aliases do
     [
-      setup: ["deps.get", "cmd npm install --prefix assets"]
+      setup: ["deps.get", "cmd npm install --prefix assets"], 
+      esprep: ["npm.run deploy --prefix ./assets", "phx.digest"],
+      esbuild: ["esprep", "escript.build"]
     ]
   end
 end
