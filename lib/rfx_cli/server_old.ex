@@ -1,12 +1,4 @@
-defmodule RfxCli.Server do
-
-  def main(_) do
-    IO.puts "HELLO WORLD"
-    IO.inspect Application.app_dir(:rfxi)
-    IO.inspect :code.priv_dir(:rfxi)
-    start()
-  end
-
+defmodule RfxCli.ServerOld do
   def start() do
     # We configure the endpoint with `server: true`,
     # so it's gonna start listening
@@ -14,8 +6,8 @@ defmodule RfxCli.Server do
     set_config()
     IO.puts("STARTING SERVER")
     IO.puts("Ctrl-C to exit...")
-    Application.stop(:rfxi)
-    IO.inspect(Rfxi.Application.start([], []))
+    IO.inspect(Application.stop(:rfxi))
+    IO.inspect(Rfxi.Application.start())
     Process.sleep(:infinity)
   end
 
