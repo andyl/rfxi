@@ -77,9 +77,6 @@ defmodule RfxCli.Base do
   end
 
   def run_command(subcommand, parse_data) do
-    IO.puts "RUN_COMMAND"
-    IO.inspect(subcommand)
-    IO.inspect(parse_data)
     case validate(subcommand, parse_data) do
       :ok -> perform(subcommand, parse_data)
       {:error, _message} -> IO.puts "Validation ERROR!"
@@ -92,17 +89,42 @@ defmodule RfxCli.Base do
   end
 
   def perform(subcommand, parse_data) do
-    IO.puts "PERFORM_COMMAND"
-    IO.inspect(subcommand |> Atom.to_string())
-    IO.inspect(parse_data)
+    IO.inspect parse_data
     sub = subcommand |> Atom.to_string() |> String.replace("_", ".")
     mod = "Elixir.Rfx.Ops." <> sub |> String.to_atom()
-    fun = "cl_code" |> String.to_atom()
-    arg = [":ok"]
-    IO.inspect mod
-    IO.inspect fun
-    IO.inspect arg
-    apply(mod, fun, arg) |> IO.inspect()
+    fun = set_scope(parse_data) |> String.to_atom() 
+    tgt = Map.fetch!(parse_data, :args)[:target] || ""
+    opt = opts_for(parse_data) |> IO.inspect
+    arg = [tgt, opt]
+    IO.inspect(opt)
+    apply(mod, fun, arg) |> Enum.map(&unstruct/1) |> Jason.encode!() # |> IO.puts()
+  end
+
+  def unstruct(struct) do
+    struct
+    |> Map.from_struct()
+  end
+
+  defp opts_for(parse_data) do
+    parse_data
+    |> Map.fetch!(:options)
+    |> Map.delete(:changelist)
+    |> Map.delete(:scope)
+    |> Keyword.new()
+  end
+
+  defp set_scope(parse_data) do
+    scope = Map.fetch!(parse_data, :options)[:scope] 
+    target = Map.fetch!(parse_data, :args)[:target]
+    case scope do
+      nil -> RfxCli.InferScope.for(target)
+      "code" -> "cl_code"
+      "file" -> "cl_file"
+      "project" -> "cl_project"
+      "subapp" -> "cl_subapp"
+      "tmpfile" -> "cl_tmpfile"
+      _ -> raise("Error: unknown scope (#{scope})")
+    end
   end
 
 end
