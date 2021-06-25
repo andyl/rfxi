@@ -1,5 +1,4 @@
 defmodule RfxCli.Base do
-
   # READING FROM STDIO
   # defp get_stdin do
   #   case IO.read(:stdio, :line) do
@@ -11,63 +10,48 @@ defmodule RfxCli.Base do
 
   def main(argv) do
     argv
-    |> optimus_parse()
-    |> execute()
+    |> parse()
+    |> validate_parse()
+    |> extract_command()
+    |> validate_command()
+    |> execute_command()
   end
 
-  def optimus_parse(argv_string) when is_binary(argv_string) do
-    argv_string
-    |> String.split(" ")
-    |> optimus_parse()
+  def parse(argv) when is_binary(argv) do
+    String.split(argv, " ")
+    |> parse()
   end
 
-  def optimus_parse(argv) do 
-    haltfun = fn(_) -> :halt end
-    case optimus_spec() |> Optimus.parse!(argv, haltfun) do
+  def parse(argv) do
+    haltfun = fn _ -> :halt end
+    argspec = RfxCli.Argspec.gen()
+    optimus = argspec |> Optimus.parse!(argv, haltfun)
+
+    case optimus do
       {:ok, result} -> result
       alt -> alt
     end
   end
 
-  def report(_alt) do
-    IO.puts("----------------------------------------------")
-    raise "ERROR: BAD"
+  def validate_parse(result) do
+    result
   end
 
-  def optimus_spec do
-    Optimus.new!(
-      name: "rfx",
-      version: "0.0.1",
-      description: "Refactoring operations for Elixir Code.",
-      about: """
-        Refactoring operations for Elixir
-        Something long goes here.
-
-        More and more long.
-      """,
-      allow_unknown_args: false,
-      flags: [
-        repl: [
-          short: "-r",
-          long: "--repl", 
-          help: "Run in REPL mode"
-        ],
-        server: [
-          short: "-s",
-          long: "--server", 
-          help: "Run web server"
-        ]
-      ],
-      subcommands: RfxCli.Oplst.subcommands(RfxCli.Oplst.all_ops())
-    ) 
+  def extract_command(_parse) do
+    _command = []
   end
 
-  def execute(:halt) do
+  def validate_command(command) do
+    command
+  end
+
+  def execute_command(command) do
+    command
   end
 
   def execute({:error, alt}) do
-    IO.puts "ERROR!"
-    IO.inspect alt
+    IO.puts("ERROR!")
+    IO.inspect(alt)
   end
 
   def execute(%{flags: %{repl: true}}) do
@@ -89,8 +73,8 @@ defmodule RfxCli.Base do
   def run_command(subcommand, parse_data) do
     case validate(subcommand, parse_data) do
       :ok -> perform(subcommand, parse_data)
-      {:error, _message} -> IO.puts "Validation ERROR!"
-      _ -> IO.puts "Error No Validation match"
+      {:error, _message} -> IO.puts("Validation ERROR!")
+      _ -> IO.puts("Error No Validation match")
     end
   end
 
@@ -99,15 +83,16 @@ defmodule RfxCli.Base do
   end
 
   def perform(subcommand, parse_data) do
-    IO.inspect parse_data
+    IO.inspect(parse_data)
     sub = subcommand |> Atom.to_string() |> String.replace("_", ".")
-    mod = "Elixir.Rfx.Ops." <> sub |> String.to_atom()
-    fun = set_scope(parse_data) |> String.to_atom() 
+    mod = ("Elixir.Rfx.Ops." <> sub) |> String.to_atom()
+    fun = set_scope(parse_data) |> String.to_atom()
     tgt = Map.fetch!(parse_data, :args)[:target] || ""
-    opt = opts_for(parse_data) |> IO.inspect
+    opt = opts_for(parse_data) |> IO.inspect()
     arg = [tgt, opt]
     IO.inspect(opt)
-    apply(mod, fun, arg) |> Enum.map(&unstruct/1) |> Jason.encode!() # |> IO.puts()
+    # |> IO.puts()
+    apply(mod, fun, arg) |> Enum.map(&unstruct/1) |> Jason.encode!()
   end
 
   def unstruct(struct) do
@@ -124,10 +109,11 @@ defmodule RfxCli.Base do
   end
 
   defp set_scope(parse_data) do
-    scope = Map.fetch!(parse_data, :options)[:scope] 
+    scope = Map.fetch!(parse_data, :options)[:scope]
     target = Map.fetch!(parse_data, :args)[:target]
+
     case scope do
-      nil -> RfxCli.InferScope.for(target)
+      nil -> RfxCli.Util.InferScope.for(target)
       "code" -> "cl_code"
       "file" -> "cl_file"
       "project" -> "cl_project"
@@ -136,5 +122,4 @@ defmodule RfxCli.Base do
       _ -> raise("Error: unknown scope (#{scope})")
     end
   end
-
 end

@@ -23,10 +23,6 @@ defmodule RfxCli.Oplst do
     keylist = [
       name: OpInfo.name(module),
       description: """
-      Something very long.
-      Longer still.
-
-      And explaintirory.
       """
     ] ++ merged_options(module)
     { OpInfo.key(module), keylist }

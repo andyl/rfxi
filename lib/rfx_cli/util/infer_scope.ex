@@ -1,4 +1,4 @@
-defmodule RfxCli.InferScope do
+defmodule RfxCli.Util.InferScope do
   def for(path) do
     IO.inspect path
     zpath = path || ""
