@@ -1,9 +1,6 @@
 defmodule RfxCli.Server do
 
   def main(_) do
-    IO.puts "HELLO WORLD"
-    # IO.inspect Application.app_dir(:rfxi)
-    # IO.inspect :code.priv_dir(:rfxi)
     start()
   end
 
@@ -15,9 +12,11 @@ defmodule RfxCli.Server do
     set_config()
     IO.puts("STARTING SERVER")
     IO.puts("Ctrl-C to exit...")
-    Application.stop(:rfxi)
-    IO.inspect(Rfxi.Application.start([], []))
-    Process.sleep(:infinity)
+    if Application.get_env(:rfxi, :env) != :test do
+      Application.stop(:rfxi)
+      IO.inspect(Rfxi.Application.start([], []))
+      Process.sleep(:infinity)
+    end
   end
 
   defp set_config do

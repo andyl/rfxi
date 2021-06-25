@@ -5,6 +5,30 @@ defmodule RfxCli.Main.ExecuteCommandTest do
   alias RfxCli.Main.ExtractCommand
   alias RfxCli.Main.ExecuteCommand
 
+  import ExUnit.CaptureIO
+
+  describe "command option" do
+    test "flag: -s" do
+      cmd_args =
+        Parse.run("-s")
+        |> ExtractCommand.run()
+
+      fun = fn -> ExecuteCommand.run(cmd_args) end
+
+      assert capture_io(fun) =~ "STARTING SERVER"
+    end
+
+    test "flag: -r" do
+      cmd_args =
+        Parse.run("-r")
+        |> ExtractCommand.run()
+
+      fun = fn -> ExecuteCommand.run(cmd_args) end
+
+      assert capture_io(fun) =~ "STARTING REPL"
+    end
+  end
+
   describe "subcommand options" do
     test "no_op" do
       result =
