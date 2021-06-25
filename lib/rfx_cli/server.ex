@@ -2,8 +2,8 @@ defmodule RfxCli.Server do
 
   def main(_) do
     IO.puts "HELLO WORLD"
-    IO.inspect Application.app_dir(:rfxi)
-    IO.inspect :code.priv_dir(:rfxi)
+    # IO.inspect Application.app_dir(:rfxi)
+    # IO.inspect :code.priv_dir(:rfxi)
     start()
   end
 

@@ -54,7 +54,7 @@ defmodule RfxiWeb.Endpoint do
     # priv/static.
     plug Plug.Static,
       at: "/",
-      from: :bong,
+      from: :rfxi,
       gzip: false,
       only: ~w(css fonts images js favicon.ico robots.txt)
   else
