@@ -33,45 +33,7 @@ defmodule RfxCli.Oplst do
   end
 
   def common_options do
-    [
-      args: [
-        target: [
-          value_name: "TARGET",
-          short: "-t",
-          long: "--target",
-          help: "Operation target", 
-          parser: :string
-        ]
-      ],
-      flags: [
-        quiet: [
-          short: "-q", 
-          long: "--quiet",
-          help: "Run without output"
-        ],
-        apply: [
-          short: "-a",
-          long: "--apply",
-          help: "Apply the changeset to the filesystem"
-        ]
-      ], 
-      options: [
-        scope: [
-          short: "-s",
-          long: "--scope",
-          value_name: "SCOPE",
-          help: "Refactoring scope",
-          parser: :string
-        ], 
-        changelist: [
-          short: "-c",
-          long: "--convert",
-          value_name: "OPTIONS",
-          help: "Changelist processing options",
-          parser: :string
-        ]
-      ]
-    ]
+    RfxCli.Argspec.subcommand_options()
   end
 
   def merged_options(module) do

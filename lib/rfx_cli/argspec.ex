@@ -26,6 +26,47 @@ defmodule RfxCli.Argspec do
     ]
   end
 
+  def subcommand_options do
+    [
+      args: [
+        target: [
+          value_name: "TARGET",
+          short: "-t",
+          long: "--target",
+          help: "Operation target", 
+          parser: :string
+        ]
+      ],
+      flags: [
+        quiet: [
+          short: "-q", 
+          long: "--quiet",
+          help: "Run without output"
+        ],
+        apply: [
+          short: "-a",
+          long: "--apply",
+          help: "Apply the changeset to the filesystem"
+        ]
+      ], 
+      options: [
+        scope: [
+          short: "-s",
+          long: "--scope",
+          value_name: "SCOPE",
+          help: "Refactoring scope",
+          parser: :string
+        ], 
+        convert: [
+          short: "-c",
+          long: "--convert",
+          value_name: "OPTIONS",
+          help: "Changelist processing options",
+          parser: :string
+        ]
+      ]
+    ]
+  end
   def subcommands do
     [
       subcommands: RfxCli.Oplst.subcommands(RfxCli.Oplst.all_ops())

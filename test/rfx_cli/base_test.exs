@@ -10,10 +10,10 @@ defmodule RfxCli.BaseTest do
       assert capture_io(fun) =~ "rfx"
     end
 
-    # test "help proto.no_op" do
-    #   fun = fn -> Base.optimus_parse("help proto.no_op") end
-    #   assert capture_io(fun) =~ "proto.no_op"
-    # end
+    test "help proto.no_op" do
+      fun = fn -> Base.parse("help proto.no_op") end
+      assert capture_io(fun) =~ "proto.no_op"
+    end
   end
 
 end

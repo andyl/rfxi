@@ -8,6 +8,8 @@ defmodule RfxCli.Base do
   #   end
   # end
 
+  alias RfxCli.Main
+
   def main(argv) do
     argv
     |> parse()
@@ -17,109 +19,24 @@ defmodule RfxCli.Base do
     |> execute_command()
   end
 
-  def parse(argv) when is_binary(argv) do
-    String.split(argv, " ")
-    |> parse()
-  end
-
   def parse(argv) do
-    haltfun = fn _ -> :halt end
-    argspec = RfxCli.Argspec.gen()
-    optimus = argspec |> Optimus.parse!(argv, haltfun)
-
-    case optimus do
-      {:ok, result} -> result
-      alt -> alt
-    end
+    Main.Parse.run(argv)
   end
 
-  def validate_parse(result) do
-    result
+  def validate_parse(parse_data) do
+    Main.ValidateParse.run(parse_data)
   end
 
-  def extract_command(_parse) do
-    _command = []
+  def extract_command(parse_data) do
+    Main.ExtractCommand.run(parse_data)
   end
 
-  def validate_command(command) do
-    command
+  def validate_command(cmd_args) do
+    Main.ValidateCommand.run(cmd_args)
   end
 
-  def execute_command(command) do
-    command
+  def execute_command(cmd_args) do
+    Main.ExecuteCommand.run(cmd_args) 
   end
 
-  def execute({:error, alt}) do
-    IO.puts("ERROR!")
-    IO.inspect(alt)
-  end
-
-  def execute(%{flags: %{repl: true}}) do
-    RfxCli.Repl.start()
-  end
-
-  def execute(%{flags: %{server: true}}) do
-    RfxCli.Server.start()
-  end
-
-  def execute({[op_atom], parse_data}) do
-    run_command(op_atom, parse_data)
-  end
-
-  def execute(optimus) do
-    IO.inspect(optimus)
-  end
-
-  def run_command(subcommand, parse_data) do
-    case validate(subcommand, parse_data) do
-      :ok -> perform(subcommand, parse_data)
-      {:error, _message} -> IO.puts("Validation ERROR!")
-      _ -> IO.puts("Error No Validation match")
-    end
-  end
-
-  def validate(_subcommand, _parse_data) do
-    :ok
-  end
-
-  def perform(subcommand, parse_data) do
-    IO.inspect(parse_data)
-    sub = subcommand |> Atom.to_string() |> String.replace("_", ".")
-    mod = ("Elixir.Rfx.Ops." <> sub) |> String.to_atom()
-    fun = set_scope(parse_data) |> String.to_atom()
-    tgt = Map.fetch!(parse_data, :args)[:target] || ""
-    opt = opts_for(parse_data) |> IO.inspect()
-    arg = [tgt, opt]
-    IO.inspect(opt)
-    # |> IO.puts()
-    apply(mod, fun, arg) |> Enum.map(&unstruct/1) |> Jason.encode!()
-  end
-
-  def unstruct(struct) do
-    struct
-    |> Map.from_struct()
-  end
-
-  defp opts_for(parse_data) do
-    parse_data
-    |> Map.fetch!(:options)
-    |> Map.delete(:changelist)
-    |> Map.delete(:scope)
-    |> Keyword.new()
-  end
-
-  defp set_scope(parse_data) do
-    scope = Map.fetch!(parse_data, :options)[:scope]
-    target = Map.fetch!(parse_data, :args)[:target]
-
-    case scope do
-      nil -> RfxCli.Util.InferScope.for(target)
-      "code" -> "cl_code"
-      "file" -> "cl_file"
-      "project" -> "cl_project"
-      "subapp" -> "cl_subapp"
-      "tmpfile" -> "cl_tmpfile"
-      _ -> raise("Error: unknown scope (#{scope})")
-    end
-  end
 end

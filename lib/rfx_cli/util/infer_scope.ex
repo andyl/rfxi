@@ -1,6 +1,5 @@
 defmodule RfxCli.Util.InferScope do
   def for(path) do
-    IO.inspect path
     zpath = path || ""
     xpath = zpath |> Path.expand()
     cond do
