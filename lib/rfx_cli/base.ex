@@ -29,12 +29,22 @@ defmodule RfxCli.Base do
     end
   end
 
+  def report(_alt) do
+    IO.puts("----------------------------------------------")
+    raise "ERROR: BAD"
+  end
+
   def optimus_spec do
     Optimus.new!(
       name: "rfx",
-      description: "Refactoring operations for Elixir",
       version: "0.0.1",
-      about: "Refactoring operations for Elixir Code.",
+      description: "Refactoring operations for Elixir Code.",
+      about: """
+        Refactoring operations for Elixir
+        Something long goes here.
+
+        More and more long.
+      """,
       allow_unknown_args: false,
       flags: [
         repl: [
@@ -49,7 +59,7 @@ defmodule RfxCli.Base do
         ]
       ],
       subcommands: RfxCli.Oplst.subcommands(RfxCli.Oplst.all_ops())
-    )
+    ) 
   end
 
   def execute(:halt) do

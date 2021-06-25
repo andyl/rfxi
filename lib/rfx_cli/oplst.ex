@@ -21,7 +21,13 @@ defmodule RfxCli.Oplst do
 
   def option_block(module) do
     keylist = [
-      {:name, OpInfo.name(module)}
+      name: OpInfo.name(module),
+      description: """
+      Something very long.
+      Longer still.
+
+      And explaintirory.
+      """
     ] ++ merged_options(module)
     { OpInfo.key(module), keylist }
   end
@@ -41,6 +47,18 @@ defmodule RfxCli.Oplst do
           parser: :string
         ]
       ],
+      flags: [
+        quiet: [
+          short: "-q", 
+          long: "--quiet",
+          help: "Run without output"
+        ],
+        apply: [
+          short: "-a",
+          long: "--apply",
+          help: "Apply the changeset to the filesystem"
+        ]
+      ], 
       options: [
         scope: [
           short: "-s",
@@ -51,7 +69,7 @@ defmodule RfxCli.Oplst do
         ], 
         changelist: [
           short: "-c",
-          long: "--changelist",
+          long: "--convert",
           value_name: "OPTIONS",
           help: "Changelist processing options",
           parser: :string
@@ -63,9 +81,11 @@ defmodule RfxCli.Oplst do
   def merged_options(module) do
     vsn1 = module_options(module) ++ [args: common_options()[:args]]
     copt = common_options()[:options] 
+    cflg = common_options()[:flags] || []
     opts = (vsn1[:options] || []) ++ copt 
+    flgs = (vsn1[:flags] || []) ++ cflg
     vsn2 = Keyword.delete(vsn1, :options)
-    vsn3 = vsn2 ++ [options: opts]
+    vsn3 = vsn2 ++ [options: opts] ++ [flags: flgs]
     vsn3
   end
 
