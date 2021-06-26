@@ -12,6 +12,12 @@ defmodule RfxCli.Base do
 
   def main(argv) do
     argv
+    |> main_core()
+    |> encode_changelist()
+  end
+
+  def main_core(argv) do
+    argv
     |> parse()
     |> validate_parse()
     |> extract_command()
@@ -36,7 +42,15 @@ defmodule RfxCli.Base do
   end
 
   def execute_command(cmd_args) do
-    Main.ExecuteCommand.run(cmd_args) 
+    case Main.ExecuteCommand.run(cmd_args) do
+      val = {:error, _, _} -> val
+      val -> val
+    end
+  end
+
+  def encode_changelist(changelist) do
+    changelist
+    |> Jason.encode!()
   end
 
 end

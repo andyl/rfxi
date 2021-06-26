@@ -25,17 +25,34 @@ defmodule RfxCli.Main.ExecuteCommand do
     apply(mod, fun, arg) |> Enum.map(&unstruct/1)
   end
 
-  def run_convert(changeset, _cmd_args) do
-    changeset
+  def run_convert(changeset, cmd_args) do
+    case clst = cmd_args[:op_convert] do
+      [] -> changeset
+      _ -> perform_convert(changeset, cmd_args)
+    end
   end
 
   def run_apply(changeset, _cmd_args) do
     changeset
   end
 
-  def unstruct(struct) do
+  defp unstruct(struct) do
     struct
     |> Map.from_struct()
   end
+
+  defp perform_convert(changeset, cmd_args) when is_list(cmd_args) do
+    cmd_args
+    |> Enum.reduce(changeset, fn(el, acc) -> xconvert(el, acc) end)
+  end
+
+  # defp xconvert(el, changeset) do
+
+
+  defp convert_method(type) do
+
+  end
+
+
 
 end

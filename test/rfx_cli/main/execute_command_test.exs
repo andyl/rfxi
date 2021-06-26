@@ -8,7 +8,7 @@ defmodule RfxCli.Main.ExecuteCommandTest do
   import ExUnit.CaptureIO
 
   describe "command option" do
-    test "flag: -s" do
+    test "flag: -s (server)" do
       cmd_args =
         Parse.run("-s")
         |> ExtractCommand.run()
@@ -18,7 +18,7 @@ defmodule RfxCli.Main.ExecuteCommandTest do
       assert capture_io(fun) =~ "STARTING SERVER"
     end
 
-    test "flag: -r" do
+    test "flag: -r (repl)" do
       cmd_args =
         Parse.run("-r")
         |> ExtractCommand.run()
@@ -34,7 +34,7 @@ defmodule RfxCli.Main.ExecuteCommandTest do
       result =
         Parse.run("proto.no_op tgt")
         |> ExtractCommand.run()
-        |> ExecuteCommand.run_subcmd()
+        |> ExecuteCommand.run()
 
       assert result  
       assert result == []
@@ -44,7 +44,7 @@ defmodule RfxCli.Main.ExecuteCommandTest do
       [result | _] =
         Parse.run("proto.comment_add :ok")
         |> ExtractCommand.run()
-        |> ExecuteCommand.run_subcmd()
+        |> ExecuteCommand.run()
 
       assert result  
       assert result.text_req
