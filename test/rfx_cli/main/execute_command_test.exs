@@ -46,7 +46,7 @@ defmodule RfxCli.Main.ExecuteCommandTest do
         |> ExtractCommand.run()
         |> ExecuteCommand.run()
 
-      assert result  
+      assert result 
       assert result.text_req
     end
   end

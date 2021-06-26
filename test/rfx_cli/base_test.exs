@@ -47,23 +47,34 @@ defmodule RfxCli.BaseTest do
         |> Base.extract_command()
         |> Base.execute_command()
 
-      assert result
-      assert result[:text_req]
-      refute result[:file_req]
-      refute result[:log]
+      assert result 
+      assert Map.fetch!(result, :text_req)
+      refute Map.fetch!(result, :file_req)
+      assert Map.fetch!(result, :log)
     end
   end
 
-  describe "#main_core" do
+  describe "#main_core converters" do
     test "proto.comment_add" do
       [result | _] =
         "proto.comment_add target -c to_string"
         |> Base.main_core()
 
-      assert result |> IO.inspect()
-      # assert result[:text_req]
-      # refute result[:file_req]
-      # assert result[:log]
+      assert result  
+      assert Map.fetch!(result, :text_req)
+      refute Map.fetch!(result, :file_req)
+      assert Map.fetch!(result, :log)
+    end
+
+    test "proto.comment_add dual-conversion" do
+      [result | _] =
+        "proto.comment_add target -c to_string,to_upcase"
+        |> Base.main_core()
+
+      assert result  
+      assert Map.fetch!(result, :text_req)
+      refute Map.fetch!(result, :file_req)
+      assert Map.fetch!(result, :log)
     end
   end
 

@@ -50,7 +50,14 @@ defmodule RfxCli.Base do
 
   def encode_changelist(changelist) do
     changelist
+    |> Enum.map(&unstruct/1)
     |> Jason.encode!()
   end
+
+  defp unstruct(struct) do
+    struct
+    |> Map.from_struct()
+  end
+
 
 end
