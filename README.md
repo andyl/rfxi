@@ -1,9 +1,12 @@
 # Rfxi
 
-Rfxi - Rfx Interface - A user interface and APIs for [Rfx](https://github.com/andyl/rfx).
+Rfxi / Rfx Interface - A user interface and APIs for [Rfx](https://github.com/andyl/rfx).
 
-Rfxi can be used interactively, and can interoperate with standalone processes
-like scripts, editors, and dev tools.  Rfxi provides:
+Rfxi can be used interactively, and can interoperate with standalone apps,
+editors, and dev tools.  
+
+Rfxi provides:
+
 - a CLI and a Webapp
 - Server APIs via Popen3, Rest/JSON and Websocket
 
