@@ -13,8 +13,8 @@ defmodule RfxCli.Main.ExecuteCommand do
         RfxCli.Server.start()
       true -> 
         run_subcmd(cmd_args)
-        |> run_convert(cmd_args)
-        |> run_apply(cmd_args)
+        # |> run_convert(cmd_args)
+        # |> run_apply()
     end
   end
 
@@ -26,19 +26,15 @@ defmodule RfxCli.Main.ExecuteCommand do
   end
 
   def run_convert(changeset, cmd_args) do
-    case clst = cmd_args[:op_convert] do
+    case cmd_args[:op_convert] do
       [] -> changeset
       _ -> perform_convert(changeset, cmd_args)
     end
   end
 
-  def run_apply(changeset, _cmd_args) do
+  def run_apply(changeset) do
     changeset
-  end
-
-  defp unstruct(struct) do
-    struct
-    |> Map.from_struct()
+    |> Rfx.Change.Set.apply!()
   end
 
   defp perform_convert(changeset, cmd_args) when is_list(cmd_args) do
@@ -46,13 +42,16 @@ defmodule RfxCli.Main.ExecuteCommand do
     |> Enum.reduce(changeset, fn(el, acc) -> xconvert(el, acc) end)
   end
 
-  # defp xconvert(el, changeset) do
-
-
-  defp convert_method(type) do
-
+  defp xconvert(type, changelist) do
+    mod = Rfx.Change.Set
+    fun = :convert
+    arg = [changelist, String.to_atom(type)]
+    apply(mod, fun, arg)
   end
 
-
+  defp unstruct(struct) do
+    struct
+    |> Map.from_struct()
+  end
 
 end
