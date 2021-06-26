@@ -1,26 +1,24 @@
 # Rfxi
 
-Rfxi - Rfx Interface - User interfaces and APIs for [Rfx](https://github.com/andyl/rfx).
+Rfxi - Rfx Interface - A user interface and APIs for [Rfx](https://github.com/andyl/rfx).
 
 Rfxi can be used interactively, and can interoperate with standalone processes
 like scripts, editors, and dev tools.  Rfxi provides:
 - a CLI and a Webapp
-- Server APIs via Rest/JSON and Websocket
+- Server APIs via Popen3, Rest/JSON and Websocket
 
 **Note:** This code is pre-release.  Not yet ready for use!!!
 
 ## Roadmap
 
 - [x] CLI: Options parser
-- [x] CLI: Mix-like task introspection
+- [x] CLI: Mix-like task introspection on operations and converters
 - [x] CLI: Repl
-- [ ] CLI: with Neovim Plugins using Lua/popen 
-- [ ] CLI: BASH Completion File
-- [ ] CLI: Command to start server
-- [ ] Sample app with custom Rfx Operations
+- [x] CLI: Embedded web server
 - [ ] Web: End-User pages
 - [ ] Web: Restful JSON API
 - [ ] Web: WebSockets API
+- [ ] Neovim: Plugin using JSON/REST interface
 
 ## Notes
 
