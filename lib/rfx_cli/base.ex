@@ -30,7 +30,7 @@ defmodule RfxCli.Base do
   def parse({:error, msg}), do: {:error, msg}
 
   def parse(input) when is_binary(input) do
-    argv = input |> String.split(" ")
+    argv = input |> OptionParser.split()
     %{argv: argv}
     |> new_state()
     |> parse()

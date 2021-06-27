@@ -59,6 +59,21 @@ defmodule RfxCli.BaseTest do
       refute Map.fetch!(result, :log)
     end
 
+    test "proto.comment_add with quoted target" do
+      new_state = 
+        ~S(proto.comment_add "x = 1" -c to_upcase)
+        |> Base.parse()
+        |> Base.extract_command()
+        |> Base.execute_command()
+
+      [result | _] = new_state.changeset
+
+      assert result 
+      assert Map.fetch!(result, :text_req)
+      refute Map.fetch!(result, :file_req)
+      assert Map.fetch!(result, :log)
+    end
+
     test "proto.comment_add with convert" do
       new_state = 
         "proto.comment_add target -c to_string"
