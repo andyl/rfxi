@@ -51,6 +51,9 @@ defmodule RfxCli.Base do
   def encode_changelist({:error, _, _}) do
   end
 
+  def encode_changelist(:ok) do
+  end
+
   def encode_changelist(changelist) do
     changelist
     |> Enum.map(&unstruct/1)
