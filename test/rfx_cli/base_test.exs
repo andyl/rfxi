@@ -50,6 +50,32 @@ defmodule RfxCli.BaseTest do
       assert result 
       assert Map.fetch!(result, :text_req)
       refute Map.fetch!(result, :file_req)
+      refute Map.fetch!(result, :log)
+    end
+
+    test "proto.comment_add with convert" do
+      [result | _] =
+        "proto.comment_add target -c to_string"
+        |> Base.parse()
+        |> Base.extract_command()
+        |> Base.execute_command()
+
+      assert result 
+      assert Map.fetch!(result, :text_req)
+      refute Map.fetch!(result, :file_req)
+      assert Map.fetch!(result, :log)
+    end
+
+    test "proto.comment_add with apply" do
+      [result | _] =
+        "proto.comment_add target -a"
+        |> Base.parse()
+        |> Base.extract_command()
+        |> Base.execute_command()
+
+      assert result 
+      assert Map.fetch!(result, :text_req)
+      refute Map.fetch!(result, :file_req)
       assert Map.fetch!(result, :log)
     end
   end
@@ -80,20 +106,13 @@ defmodule RfxCli.BaseTest do
 
   describe "#main" do
     test "proto.no_op" do
-      result =
-        "proto.no_op target"
-        |> Base.main()
-
-      assert result
-      assert result == "[]"
+      fun = fn -> Base.main("proto.no_op target") end
+      assert capture_io(fun) == "[]\n"
     end
 
     test "proto.comment_add" do
-      result =
-        "proto.comment_add target"
-        |> Base.main()
-
-      assert result 
+      fun = fn -> Base.main("proto.comment_add target") end
+      assert capture_io(fun) =~ "target"
     end
   end
 end

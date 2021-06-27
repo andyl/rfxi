@@ -48,10 +48,15 @@ defmodule RfxCli.Base do
     end
   end
 
+  def encode_changelist({:error, _, _}) do
+  end
+
   def encode_changelist(changelist) do
     changelist
     |> Enum.map(&unstruct/1)
     |> Jason.encode!()
+    |> Jason.Formatter.pretty_print()
+    |> IO.puts()
   end
 
   defp unstruct(struct) do

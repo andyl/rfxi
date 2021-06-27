@@ -14,7 +14,7 @@ defmodule RfxCli.Main.ExecuteCommand do
       true -> 
         run_subcmd(cmd_args)
         |> run_convert(cmd_args)
-        |> run_apply()
+        |> run_apply(cmd_args)
     end
   end
 
@@ -32,9 +32,11 @@ defmodule RfxCli.Main.ExecuteCommand do
     end
   end
 
-  def run_apply(changeset) do
-    changeset
-    |> Rfx.Change.Set.apply!()
+  def run_apply(changeset, cmd_args) do
+    case cmd_args[:op_apply] do
+      true -> changeset |> Rfx.Change.Set.apply!()
+      false -> changeset
+    end
   end
 
   defp perform_convert(changeset, cmd_args) when is_list(cmd_args) do
