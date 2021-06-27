@@ -38,6 +38,11 @@ defmodule RfxCli.Argspec do
         ]
       ],
       flags: [
+        oneline: [
+          short: "-o", 
+          long: "--oneline",
+          help: "Render JSON output in one line"
+        ],
         quiet: [
           short: "-q", 
           long: "--quiet",

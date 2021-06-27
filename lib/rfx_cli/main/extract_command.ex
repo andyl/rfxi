@@ -15,6 +15,7 @@ defmodule RfxCli.Main.ExtractCommand do
     op_convert: <string - comma-separated list of conversions>
     op_apply: boolean (false)
     op_quiet: boolean (false)
+    op_oneline: boolean (false)
   ]
   """
 
@@ -51,7 +52,8 @@ defmodule RfxCli.Main.ExtractCommand do
       op_args: arg,
       op_convert: con, 
       op_apply: Map.fetch!(parse, :flags)[:apply], 
-      op_quiet: Map.fetch!(parse, :flags)[:quiet] 
+      op_quiet: Map.fetch!(parse, :flags)[:quiet],
+      op_oneline: Map.fetch!(parse, :flags)[:oneline]
     ]
   end
 
@@ -105,7 +107,8 @@ defmodule RfxCli.Main.ExtractCommand do
       op_args: nil,
       op_convert: nil, 
       op_apply: false,
-      op_quiet: false
+      op_quiet: false, 
+      op_oneline: false
     ]
   end
 end

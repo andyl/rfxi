@@ -13,53 +13,80 @@ defmodule RfxCli.Base do
   def main(argv) do
     argv
     |> main_core()
-    |> encode_changelist()
+    |> print_output()
   end
 
   def main_core(argv) do
-    argv
+    %{argv: argv}
+    |> new_state()
     |> parse()
     |> validate_parse()
     |> extract_command()
     |> validate_command()
     |> execute_command()
+    |> encode_changeset()
   end
 
-  def parse(argv) do
-    Main.Parse.run(argv)
+  def parse({:error, msg}), do: {:error, msg}
+
+  def parse(input) when is_binary(input) do
+    argv = input |> String.split(" ")
+    %{argv: argv}
+    |> new_state()
+    |> parse()
   end
 
-  def validate_parse(parse_data) do
-    Main.ValidateParse.run(parse_data)
-  end
-
-  def extract_command(parse_data) do
-    Main.ExtractCommand.run(parse_data)
-  end
-
-  def validate_command(cmd_args) do
-    Main.ValidateCommand.run(cmd_args)
-  end
-
-  def execute_command(cmd_args) do
-    case Main.ExecuteCommand.run(cmd_args) do
-      val = {:error, _, _} -> val
-      val -> val
+  def parse(state) do
+    case Main.Parse.run(state.argv) do
+      {:error, msg} -> {:error, msg}
+      result -> assign(state, :parse, result)
     end
   end
 
-  def encode_changelist({:error, _, _}) do
+  def validate_parse(state) do
+    state
   end
 
-  def encode_changelist(:ok) do
+  def extract_command({:error, msg}), do: {:error, msg}
+
+  def extract_command(state) do
+    case Main.ExtractCommand.run(state.parse) do
+      {:error, msg} -> {:error, msg}
+      result -> assign(state, :cmd_args, result)
+    end
   end
 
-  def encode_changelist(changelist) do
-    changelist
-    |> Enum.map(&unstruct/1)
-    |> Jason.encode!()
-    |> Jason.Formatter.pretty_print()
-    |> IO.puts()
+  def validate_command(state) do
+    state
+  end
+
+  def execute_command({:error, msg}), do: {:error, msg}
+
+  def execute_command(state) do
+    case Main.ExecuteCommand.run(state.cmd_args) do
+      {:error, msg} -> {:error, msg}
+      result -> assign(state, :changeset, result)
+    end
+  end
+
+  def encode_changeset({:error, msg}), do: {:error, msg}
+
+  def encode_changeset(state) do
+    json =
+      state.changeset
+      |> Enum.map(&unstruct/1)
+      |> Jason.encode!()
+
+    assign(state, :json, json)
+  end
+
+  def print_output({:error, msg}), do: {:error, msg}
+
+  def print_output(state) do
+    case state.cmd_args[:op_oneline] do
+      true -> state.json |> IO.puts()
+      false -> state.json |> Jason.Formatter.pretty_print() |> IO.puts()
+    end
   end
 
   defp unstruct(struct) do
@@ -67,5 +94,18 @@ defmodule RfxCli.Base do
     |> Map.from_struct()
   end
 
+  defp new_state(initial_state) do
+    %{
+      argv: nil,
+      parse: nil,
+      cmd_args: nil,
+      changeset: nil,
+      json: nil
+    }
+    |> Map.merge(initial_state)
+  end
 
+  def assign(state, field, value) do
+    Map.merge(state, %{field => value})
+  end
 end
