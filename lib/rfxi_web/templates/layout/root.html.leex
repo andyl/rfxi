@@ -4,6 +4,7 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" href="rfx_icon.svg">
     <%= csrf_meta_tag() %>
     <%= live_title_tag assigns[:page_title] || "Rfxi", suffix: " · Phoenix Framework" %>
     <link phx-track-static rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
@@ -19,7 +20,9 @@
             <% end %>
           </ul>
         </nav>
-        Rfx / Operations for Elixir Refactoring
+        <div>
+        <img src="rfx_icon.svg" height=20px style='position: relative; top: 4px;' > Rfx : Operations for Elixir Refactoring
+        </div>
       </section>
     </header>
     <%= @inner_content %>
