@@ -10,7 +10,7 @@ Rfxi provides:
 - a CLI and a Webapp
 - Server APIs via Popen3, Rest/JSON and Websocket
 
-**Note:** This code is pre-release.  Not yet ready for use!!!
+**Note:** This code is pre-release!  Not at all ready for production use.
 
 ## Roadmap
 
@@ -18,8 +18,8 @@ Rfxi provides:
 - [x] CLI: Mix-like task introspection on operations and converters
 - [x] CLI: Repl
 - [x] CLI: Embedded web server
+- [x] Web: Restful JSON API
 - [ ] Web: End-User pages
-- [ ] Web: Restful JSON API
 - [ ] Web: WebSockets API
 - [ ] Neovim: Plugin using JSON/REST interface
 

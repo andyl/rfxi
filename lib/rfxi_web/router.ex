@@ -20,10 +20,11 @@ defmodule RfxiWeb.Router do
     live "/", PageLive, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", RfxiWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", RfxiWeb do
+    pipe_through :api
+
+    resources "/rfx", RfxController, only: [:index]
+  end
 
   # Enables LiveDashboard only for development
   #
