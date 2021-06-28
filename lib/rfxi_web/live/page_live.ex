@@ -25,6 +25,12 @@ defmodule RfxiWeb.PageLive do
     end
   end
 
+  def handle_event("validate", misc, socket) do
+    IO.inspect misc
+    IO.inspect socket
+    {:noreply, socket}
+  end
+
   defp search(query) do
     if not RfxiWeb.Endpoint.config(:code_reloader) do
       raise "action disabled when not in development"
