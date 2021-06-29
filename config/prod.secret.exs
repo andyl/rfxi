@@ -8,7 +8,7 @@ skey = "123456789 123456789 123456789 123456789 123456789 123456789 123456789"
 
 config :rfxi, RfxiWeb.Endpoint,
   http: [
-    port: String.to_integer(System.get_env("PORT") || "8082"),
+    port: String.to_integer(System.get_env("PORT") || "4040"),
     transport_options: [socket_opts: [:inet6]]
   ],
   secret_key_base: skey
