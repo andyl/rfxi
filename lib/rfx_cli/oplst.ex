@@ -14,9 +14,9 @@ defmodule RfxCli.Oplst do
     Rfx.Catalog.OpsCat.all_ops()
   end
 
-  def subcommands(list \\ all_ops()) do
-    list
-    |> Enum.map(&option_block/1)
+  def subcommands(list \\ all_ops()) do 
+    RfxCli.Argspec.base_subcommands() ++
+      Enum.map(list, &option_block/1) 
   end
 
   def option_block(module) do

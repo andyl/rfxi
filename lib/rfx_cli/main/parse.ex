@@ -12,7 +12,7 @@ defmodule RfxCli.Main.Parse do
     optimus = argspec |> Optimus.parse!(argv, haltfun)
 
     case optimus do
-      {:error, msg} -> {:error, :parse, msg}
+      {:error, msg} -> {:error, msg}
       parse_data -> parse_data
     end
   end

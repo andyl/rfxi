@@ -7,7 +7,7 @@ defmodule RfxiWeb.EchoSocket do
   end
 
   def connect(state) do
-    IO.inspect state, label: "CONNECT_ECHO_SOCKET"
+    # IO.inspect state, label: "CONNECT_ECHO_SOCKET"
     # Callback to retrieve relevant data from the connection.
     # The map contains options, params, transport and endpoint keys.
     {:ok, state}
