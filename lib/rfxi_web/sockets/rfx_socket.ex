@@ -1,13 +1,14 @@
-defmodule RfxiWeb.EchoSocket do
+defmodule RfxiWeb.RfxSocket do
   @behaviour Phoenix.Socket.Transport
 
   def child_spec(_opts) do
     # We won't spawn any process, so let's return a dummy task
-    %{id: :ws_echo, start: {Task, :start_link, [fn -> :ok end]}, restart: :transient}
+    # %{id: Task, start: {Task, :start_link, [fn -> :ok end]}, restart: :transient}
+    %{id: :ws_rfx, start: {Task, :start_link, [fn -> :ok end]}, restart: :transient}
   end
 
   def connect(state) do
-    IO.inspect state, label: "CONNECT_ECHO_SOCKET"
+    IO.inspect state, label: "CONNECT_RFX_SOCKET"
     # Callback to retrieve relevant data from the connection.
     # The map contains options, params, transport and endpoint keys.
     {:ok, state}
@@ -19,7 +20,8 @@ defmodule RfxiWeb.EchoSocket do
   end
 
   def handle_in({text, _opts}, state) do
-    {:reply, :ok, {:text, text |> String.upcase()}, state}
+    output = RfxCli.Base.main_core(text).json
+    {:reply, :ok, {:text, output}, state}
   end
 
   def handle_info(_, state) do

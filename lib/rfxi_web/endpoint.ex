@@ -12,9 +12,11 @@ defmodule RfxiWeb.Endpoint do
 
   socket "/socket", RfxiWeb.UserSocket, websocket: true, longpoll: false
 
-  # test using
   #  wscat -c ws://localhost:4040/echo/websocket
   socket "/echo", RfxiWeb.EchoSocket, websocket: true, longpoll: true
+
+  #  wscat -c ws://localhost:4040/rfx/websocket
+  socket "/rfx", RfxiWeb.RfxSocket, websocket: true, longpoll: true
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
