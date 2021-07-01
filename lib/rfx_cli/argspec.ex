@@ -26,6 +26,23 @@ defmodule RfxCli.Argspec do
     ]
   end
 
+  def base_subcommands do
+    [
+      # server: [
+      #   name: "Server",
+      #   about: "king kong"
+      # ],
+      # repl: [
+      #   name: "Repl",
+      #   about: "down town"
+      # ],
+      # pipe: [
+      #   name: "Pipe",
+      #   about: "back door"
+      # ]
+    ]
+  end
+
   def subcommand_options do
     [
       args: [
@@ -33,18 +50,18 @@ defmodule RfxCli.Argspec do
           value_name: "TARGET",
           short: "-t",
           long: "--target",
-          help: "Operation target", 
+          help: "Operation target",
           parser: :string
         ]
       ],
       flags: [
         oneline: [
-          short: "-o", 
+          short: "-o",
           long: "--oneline",
           help: "Render JSON output in one line"
         ],
         quiet: [
-          short: "-q", 
+          short: "-q",
           long: "--quiet",
           help: "Run without output"
         ],
@@ -53,7 +70,7 @@ defmodule RfxCli.Argspec do
           long: "--apply",
           help: "Apply the changeset to the filesystem"
         ]
-      ], 
+      ],
       options: [
         scope: [
           short: "-s",
@@ -61,7 +78,7 @@ defmodule RfxCli.Argspec do
           value_name: "SCOPE",
           help: "Refactoring scope",
           parser: :string
-        ], 
+        ],
         convert: [
           short: "-c",
           long: "--convert",
@@ -72,6 +89,7 @@ defmodule RfxCli.Argspec do
       ]
     ]
   end
+
   def subcommands do
     [
       subcommands: RfxCli.Oplst.subcommands(RfxCli.Oplst.all_ops())

@@ -10,9 +10,13 @@ defmodule RfxiWeb.Endpoint do
     signing_salt: "Bps/fnJq"
   ]
 
-  socket "/socket", RfxiWeb.UserSocket,
-    websocket: true,
-    longpoll: false
+  socket "/socket", RfxiWeb.UserSocket, websocket: true, longpoll: false
+
+  #  wscat -c ws://localhost:4040/echo/websocket
+  socket "/echo", RfxiWeb.EchoSocket, websocket: true, longpoll: true
+
+  #  wscat -c ws://localhost:4040/rfx/websocket
+  socket "/rfx", RfxiWeb.RfxSocket, websocket: true, longpoll: true
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
@@ -23,7 +27,7 @@ defmodule RfxiWeb.Endpoint do
   # You should set gzip to true if you are running phx.digest
   # when deploying your static files in production.
   # plug Plug.Static,
-  #   at: "/",
+  #   at: "/
   #   from: :rfxi,
   #   gzip: false,
   #   only: ~w(css fonts images js favicon.ico robots.txt)

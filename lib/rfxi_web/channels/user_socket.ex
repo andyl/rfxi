@@ -3,6 +3,9 @@ defmodule RfxiWeb.UserSocket do
 
   ## Channels
   # channel "room:*", RfxiWeb.RoomChannel
+  channel "ping", RfxiWeb.PingChannel
+  channel "echo", RfxiWeb.EchoChannel
+  channel "rfx",  RfxiWeb.RfxChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
