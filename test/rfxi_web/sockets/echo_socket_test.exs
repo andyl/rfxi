@@ -4,10 +4,11 @@ defmodule RfxiWeb.EchoSocketTest do
   alias RfxiWeb.EchoSocket
 
   describe "connect" do
-    # test "connect without parameters" do
+    test "connect without parameters" do
     #   connect(EchoSocket, %{}) |> IO.inspect()
     #   assert true
-    # end
+      assert EchoSocket
+    end
   end
 
 end
