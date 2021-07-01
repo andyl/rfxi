@@ -66,7 +66,7 @@ defmodule Rfxi.MixProject do
       {:ex_doc, "~> 0.24", only: :dev, runtime: false},
       {:mix_test_interactive, "~> 1.0", only: :dev, runtime: false}, 
       {:mix_npm, "~> 0.3"}, 
-      {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
+      # {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
     ]
   end
 

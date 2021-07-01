@@ -3,7 +3,7 @@ defmodule RfxCli.BaseTest do
 
   alias RfxCli.Base
   import ExUnit.CaptureIO
-
+  
   describe "#parse" do
     test "help" do
       fun = fn -> Base.parse("--help") end

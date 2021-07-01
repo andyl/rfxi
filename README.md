@@ -19,8 +19,8 @@ Rfxi provides:
 - [x] CLI: Repl
 - [x] CLI: Embedded web server
 - [x] Web: Restful JSON API
-- [ ] Web: End-User pages
-- [ ] Web: WebSockets API
+- [x] Web: WebSockets API
+- [x] Web: Minimal End-User LiveView pages
 - [ ] Neovim: Plugin using JSON/REST interface
 
 ## Notes
@@ -33,11 +33,12 @@ About Rfxi:
   like built-in Rfx Operations. 
 - There is a repl built into the CLI.
 - The repl uses the same option parser as the CLI.  
-- The web server can be started from a CLI command (eg `rfx --server`) - similar
-  to how it is done with Livebook
-- The WebUI will provide an API - Restful JSON & socket interfaces - and have
+- The web server can be started from a CLI command (eg `rfx --server`), and can
+  be launched by a parent process (eg Vim, Emacs, VsCode...)
+- The WebUI provides an API - Restful JSON & socket interfaces - and have
   Liveviews for lightweight testing and monitoring
-- The JSON and socket interfaces will use the same option parser as the CLI
+- The JSON and socket APIs use the same option parser and return values as the
+  CLI
 
 # Related Code
 
