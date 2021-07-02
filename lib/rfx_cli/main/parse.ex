@@ -8,8 +8,8 @@ defmodule RfxCli.Main.Parse do
 
   def run(argv) do
     haltfun = fn _ -> {:error, :halt} end
-    argspec = RfxCli.Argspec.gen()
-    optimus = argspec |> Optimus.parse!(argv, haltfun)
+    propspec = RfxCli.Argspec.gen()
+    optimus = propspec |> Optimus.parse!(argv, haltfun)
 
     case optimus do
       {:error, msg} -> {:error, msg}
