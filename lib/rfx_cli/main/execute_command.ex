@@ -6,12 +6,12 @@ defmodule RfxCli.Main.ExecuteCommand do
   end
 
   def run(cmd_args) do
-    cond do
-      cmd_args[:launch_repl] -> 
+    case cmd_args[:launch_cmd] do
+      :repl -> 
         RfxCli.Repl.start()
-      cmd_args[:launch_server] -> 
+      :server -> 
         RfxCli.Server.start()
-      true -> 
+      _ -> 
         run_subcmd(cmd_args)
         |> run_convert(cmd_args)
         |> run_apply(cmd_args)

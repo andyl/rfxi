@@ -6,8 +6,8 @@ defmodule RfxCli.Main.ExtractCommand do
 
   ```elixir
   [
-    launch_repl: boolean (false)
-    launch_server: boolean (false) 
+    launch_cmd: <cmd_name: atom>
+    launch_args: struct
     op_module: <module_name: string>
     op_scope: <code | file | project | subapp | tmpfile>
     op_target: <scope target: code | filepath | dirpath>
@@ -31,14 +31,23 @@ defmodule RfxCli.Main.ExtractCommand do
     Keyword.merge(default_args(), cmd_args(parse))
   end
 
-  defp cmd_args(parse) do
+  defp cmd_args(_parse) do
+    raise "CMD ARG ERROR"
     [
-      launch_repl: Map.fetch!(parse, :flags)[:repl],
-      launch_server: Map.fetch!(parse, :flags)[:server]
+      # launch_repl: Map.fetch!(parse, :flags)[:repl],
+      # launch_server: Map.fetch!(parse, :flags)[:server]
     ] 
   end
 
-  defp subcmd_args(subcmd, parse) do
+  defp subcmd_args(cmd, parse) do
+    commands = [ :credo, :pipe, :server, :repl ]
+    case Enum.member?(commands, cmd) do
+      true -> [launch_cmd: cmd, launch_args: parse]
+      false -> subop_args(cmd, parse)
+    end
+  end
+
+  defp subop_args(subcmd, parse) do
     sub = subcmd |> Atom.to_string() |> String.replace("_", ".")
     mod = ("Elixir.Rfx.Ops." <> sub) |> String.to_atom()
     fun = set_scope(parse) |> String.to_atom()
@@ -97,10 +106,15 @@ defmodule RfxCli.Main.ExtractCommand do
     |> Keyword.new()
   end
 
-  defp default_args do
+  defp launch_args do 
     [
-      launch_repl: false, 
-      launch_server: false,
+      launch_cmd: nil,
+      launch_args: nil,
+    ]
+  end
+
+  defp op_args do 
+    [
       op_module: nil,
       op_scope: nil,
       op_target: nil,
@@ -110,5 +124,9 @@ defmodule RfxCli.Main.ExtractCommand do
       op_quiet: false, 
       op_oneline: false
     ]
+  end
+
+  defp default_args do
+    launch_args() ++ op_args()
   end
 end
