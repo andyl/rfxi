@@ -1,4 +1,5 @@
 defmodule RfxCli.Base do
+  
   # READING FROM STDIO
   # defp get_stdin do
   #   case IO.read(:stdio, :line) do
@@ -70,6 +71,10 @@ defmodule RfxCli.Base do
   end
 
   def encode_changeset({:error, msg}), do: {:error, msg}
+
+  def encode_changeset(%{changeset: :ok}) do 
+    {:error, "Closed"}
+  end 
 
   def encode_changeset(state) do
     json =
