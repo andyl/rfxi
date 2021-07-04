@@ -30,14 +30,8 @@ defmodule RfxCli.Util.Credo do
   # propspec), they are stored in the `meta` field of the Credo issue.
   defp attach_rfx_operations(issue) do 
     operations = Rfx.Catalog.OpsCat.find_by_prop(:credo_check, Map.fetch!(issue, :check))
-    # IO.inspect(operations, label: "OPPPP") 
-    # IO.inspect(issue, label: "IIIII") 
 
-    result = %{issue | meta: operations}
-    if operations != [] do
-      IO.inspect(result)
-    end
-    result
+    %{issue | meta: operations}
   end
 
 end
