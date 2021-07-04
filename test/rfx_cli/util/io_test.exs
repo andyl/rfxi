@@ -24,6 +24,14 @@ defmodule RfxCli.Util.IoTest do
       assert Io.run_silently(fn -> LclTst.myfun("input_text") end) == "INPUT_TEXT"
     end
 
+    # test "running with credo" do
+    #   IO.puts "----------------------------------"
+    #   result = Io.run_silently(RfxCli.Util.Credo.run/0)
+    #   IO.puts "----------------------------------"
+    #   assert result |> IO.inspect(label: "ASDFASDFASDF")
+    # end
+
   end
+
 
 end

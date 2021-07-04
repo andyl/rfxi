@@ -1,4 +1,4 @@
-defmodule RfxCli.Credo1 do
+defmodule RfxCli.CredoRepl do
   def start do
     start("begin", 1)
   end
@@ -39,11 +39,5 @@ defmodule RfxCli.Credo1 do
 
   def run(command) do
     RfxCli.Base.main(command)
-
-# Credo.Execution.build([]) |> Credo.Execution.run() |> Credo.Execution.ExecutionIssues.to_map()
-
-
-
-
   end
 end
