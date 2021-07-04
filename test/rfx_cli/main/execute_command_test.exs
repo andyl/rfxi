@@ -18,14 +18,14 @@ defmodule RfxCli.Main.ExecuteCommandTest do
       assert capture_io(fun) =~ "STARTING SERVER"
     end
 
-    test "cmd: Repl" do
+    test "cmd: RfxRepl" do
       cmd_args =
-        Parse.run("Repl")
+        Parse.run("RfxRepl")
         |> ExtractCommand.run()
 
       fun = fn -> ExecuteCommand.run(cmd_args) end
 
-      assert capture_io(fun) =~ "STARTING REPL"
+      assert capture_io(fun) =~ "STARTING RFX REPL"
     end
   end
 

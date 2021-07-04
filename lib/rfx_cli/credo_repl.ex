@@ -1,43 +1,44 @@
 defmodule RfxCli.CredoRepl do
+
   def start do
-    start("begin", 1)
+    loop("begin", %{count: 1})
   end
 
-  def start("exit", _) do
-    IO.puts("EXITING.")
+  def start(state) do 
+    loop("begin", state)
   end
 
-  def start("begin", _) do
-    IO.puts("STARTING REPL")
+  def loop("begin", state) do
+    IO.puts("STARTING CREDO REPL")
 
     if Application.get_env(:rfxi, :env) != :test do
-      start(:ok, 0)
+      loop(:ok, state)
     end
   end
 
-  def start(_, count) do
-    command = get_input(count)
+  def loop(_, state) do
+    command = get_input(state.count)
 
     case run(command) do
       :halt -> IO.puts("DONE")
-      _ -> start("continue", count + 1)
+      _ -> loop("continue", %{state | count: state.count + 1})
     end
   end
 
-  def get_input(count) do
-    IO.gets("credo_rfx_#{count}> ")
+  defp get_input(count) do
+    IO.gets("rfx_credo_repl_#{count}> ")
     |> String.trim()
   end
 
-  def run("") do
+  defp run("") do
     :no_cmd
   end
 
-  def run("exit") do
+  defp run("exit") do
     :halt
   end
 
-  def run(command) do
+  defp run(command) do
     RfxCli.Base.main(command)
   end
 end

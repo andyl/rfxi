@@ -7,7 +7,9 @@ defmodule RfxCli.Main.ExecuteCommand do
 
   def run(cmd_args) do
     case cmd_args[:launch_cmd] do
-      :repl -> 
+      :credo_repl -> 
+        RfxCli.CredoRepl.start()
+      :rfx_repl -> 
         RfxCli.Repl.start()
       :server -> 
         RfxCli.Server.start()

@@ -28,13 +28,13 @@ defmodule RfxCli.Argspec do
 
   def base_subcommands do
     [
-      credo: [
-        name: "Credo",
-        about: "Start credo runner"
+      credo_repl: [
+        name: "CredoRepl",
+        about: "Start credo repl"
       ],
-      repl: [
-        name: "Repl",
-        about: "Start repl mode"
+      rfx_repl: [
+        name: "RfxRepl",
+        about: "Start rfx repl"
       ],
       server: [
         name: "Server",

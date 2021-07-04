@@ -40,7 +40,7 @@ defmodule RfxCli.Main.ExtractCommand do
   end
 
   defp subcmd_args(cmd, parse) do
-    commands = [ :credo, :pipe, :server, :repl ]
+    commands = [ :credo_repl, :pipe, :server, :rfx_repl ]
     case Enum.member?(commands, cmd) do
       true -> [launch_cmd: cmd, launch_args: parse]
       false -> subop_args(cmd, parse)

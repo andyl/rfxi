@@ -8,7 +8,7 @@ defmodule RfxCli.Repl do
   end
 
   def start("begin", _) do
-    IO.puts("STARTING REPL")
+    IO.puts("STARTING RFX REPL")
 
     if Application.get_env(:rfxi, :env) != :test do
       start(:ok, 0)
