@@ -53,11 +53,11 @@ defmodule RfxCli.CredoRepl do
     opts = """
 
       Commands:
-      - help                   - display this help message
-      - suggest                - run and display a Credo analysis
-      - detail <CredoIssueId>  - show the detail for a Credo issue
-      - apply <RfxOperationId> - apply an operation to the filesystem
-      - exit                   - quit the repl
+      - help           - display this help message
+      - suggest        - run and display a Credo analysis
+      - detail <ID>    - show the detail for a Credo Issue
+      - apply <Rfx Id> - apply an Rfx Operation to the filesystem
+      - exit           - quit the repl
     """
 
     IO.puts(opts)
@@ -173,9 +173,12 @@ defmodule RfxCli.CredoRepl do
     path = "~/#{Enum.join(rest, "/")}"
     date = :calendar.local_time() |> NaiveDateTime.from_erl!() |> Calendar.strftime("%d %b %a %H:%M")
     title = "Credo Issues       #{path}       #{date}"
-    header = ["ID", "File", "Credo Check", "Rfx Operations"]
-    TableRex.quick_render!(rows, header, title) 
-    |> IO.puts() 
+    header = ["ID", "File", "Credo Check", "Rfx Operation"]
+    if Enum.any?(rows) do
+      TableRex.quick_render!(rows, header, title)
+    else
+      "Congrats!  No Credo issues!!"
+    end |> IO.puts()
   end 
 
   defp flatten(list), do: flatten(list, [])
