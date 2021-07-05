@@ -29,7 +29,7 @@ defmodule RfxCli.Oplst do
   end
 
   def module_options(module) do
-    OpInfo.argspec(module)
+    OpInfo.propspec(module)
   end
 
   def common_options do

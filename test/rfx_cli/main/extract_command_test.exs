@@ -5,24 +5,34 @@ defmodule RfxCli.Main.ExtractCommandTest do
   alias RfxCli.Main.ExtractCommand
 
   describe "command option" do
-    test "flag: -s" do
+    test "cmd: Server" do
       result =
-        Parse.run("-s")
+        Parse.run("Server")
         |> ExtractCommand.run()
 
-      assert result
-      refute result[:launch_repl]
-      assert result[:launch_server]
+      assert result 
+      assert result[:launch_cmd] == :server
+      assert result[:launch_args]
     end
 
-    test "flag: -r" do
+    test "cmd: RfxRepl" do
       result =
-        Parse.run("-r")
+        Parse.run("RfxRepl")
         |> ExtractCommand.run()
 
       assert result
-      assert result[:launch_repl]
-      refute result[:launch_server]
+      assert result[:launch_cmd] == :rfx_repl
+      assert result[:launch_args]
+    end
+
+    test "cmd: CredoRepl" do
+      result =
+        Parse.run("CredoRepl")
+        |> ExtractCommand.run()
+
+      assert result
+      assert result[:launch_cmd] == :credo_repl
+      assert result[:launch_args]
     end
   end
 
@@ -33,6 +43,7 @@ defmodule RfxCli.Main.ExtractCommandTest do
         |> ExtractCommand.run()
 
       assert result 
+      assert result[:op_module] == Rfx.Ops.Proto.NoOp
     end
   end
 end

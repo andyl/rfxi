@@ -12,30 +12,34 @@ defmodule RfxCli.Argspec do
       """,
       allow_unknown_args: false,
       flags: [
-        repl: [
-          short: "-r",
-          long: "--repl",
-          help: "Run in REPL mode"
-        ],
-        server: [
-          short: "-s",
-          long: "--server",
-          help: "Run web server"
-        ]
+        # repl: [
+        #   short: "-r",
+        #   long: "--repl",
+        #   help: "Run in REPL mode"
+        # ],
+        # server: [
+        #   short: "-s",
+        #   long: "--server",
+        #   help: "Run web server"
+        # ]
       ]
     ]
   end
 
   def base_subcommands do
     [
-      # server: [
-      #   name: "Server",
-      #   about: "king kong"
-      # ],
-      # repl: [
-      #   name: "Repl",
-      #   about: "down town"
-      # ],
+      credo_repl: [
+        name: "CredoRepl",
+        about: "Start credo repl"
+      ],
+      rfx_repl: [
+        name: "RfxRepl",
+        about: "Start rfx repl"
+      ],
+      server: [
+        name: "Server",
+        about: "Start web server"
+      ],
       # pipe: [
       #   name: "Pipe",
       #   about: "back door"
