@@ -64,14 +64,12 @@ defmodule RfxCli.CredoRepl do
   end
 
   defp run(["detail", issue_id], state) do
-    id = issue_id |> String.to_integer()
-
     with {:ok, issues} <- Map.fetch(state, :credo_enhanced),
-         {:ok, issue} <- Enum.find_value(issues, &(id == &1[:id] && {:ok, &1}))
+         {:ok, issue} <- get_issue(issue_id, issues)
     do
       display_detail(issue)
     else 
-      _err -> IO.puts("No matching issue (ID=#{id})")
+      _err -> IO.puts("No matching issue (ID=#{issue_id})")
     end
 
     state
@@ -79,20 +77,16 @@ defmodule RfxCli.CredoRepl do
 
   defp run(["apply", op_id], state) do
     
-    # with {:ok, issues} <- Map.fetch(state, :credo_enhanced),
-    #      [id | _] <- String.split(op_id, ".")
-    #      {:ok, issue} <- Enum.find_value(issues, &(id == &1[:id] && {:ok, &1}))
-    #      {:ok, keys} <- Enum.find_value(issue[:operation_keys], &(op_id == &1 && {:ok, &1}))
-    #      {:ok, issue} <- Enum.find_value(issues, &(Enum.find(issue.operation
-    # do
-    #   run_operation(issue, op_id)
-    # else 
-    #   _err -> IO.puts("No matching operation (ID=#{id})")
-    # end
-    #
-    # state
-    
-    IO.puts("APPLY TBD (OPID = #{op_id})")
+    with {:ok, issues} <- Map.fetch(state, :credo_enhanced),
+         [id | _] <- String.split(op_id, "."),  
+         {:ok, issue} <- get_issue(id, issues), 
+         {:ok, _key} <- Enum.find_value(issue[:operation_keys], &(op_id == &1 && {:ok, &1}))
+    do
+      run_operation(issue, op_id)
+    else 
+      _err -> IO.puts("No matching operation (ID=#{op_id})")
+    end
+
     state
   end
 
@@ -116,6 +110,18 @@ defmodule RfxCli.CredoRepl do
     output = cmd |> Enum.join(" ")
     IO.puts(~s(Unknown command: "#{output}" - type '?' for help...))
     state
+  end
+
+  def run_operation(issue, op_id) do
+    IO.puts "RUN OPERATION #{op_id}"
+    IO.inspect issue
+  end
+
+  def get_issue(issue_id, issues) do
+    id = issue_id |> String.to_integer()
+
+    issues
+    |> Enum.find_value(&(id == &1[:id] && {:ok, &1}))
   end
 
   defp augment_credo(data) do
