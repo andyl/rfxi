@@ -171,7 +171,7 @@ defmodule RfxCli.CredoRepl do
   defp render_credo(rows) do 
     [_| [_|rest]] = Path.expand(".") |> Path.split()
     path = "~/#{Enum.join(rest, "/")}"
-    date = :calendar.local_time() |> NaiveDateTime.from_erl!() |> Calendar.strftime("%d %b %a %H:%M")
+    date = :calendar.local_time() |> NaiveDateTime.from_erl!() |> Calendar.strftime("%b %d %a %H:%M")
     title = "Credo Issues       #{path}       #{date}"
     header = ["ID", "File", "Credo Check", "Rfx Operation"]
     if Enum.any?(rows) do
