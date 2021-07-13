@@ -43,10 +43,12 @@ About Rfxi:
 # Related Code
 
 - [Rfx][rfx] and [Sourceror][src] - the foundation libraries for Rfxi
-- [RfxiNvim][nvm] - an experimental Neovim plugin that uses Rfxi
+- [rfx.nvim][nvm] - an experimental Neovim plugin that uses Rfxi
+- [rfx.vscode][vsc] - an experimental Vscode extension that uses Rfxi
 
 [rfx]: https://github.com/andyl/rfx
-[nvm]: https://github.com/andyl/rfxi_nvim
+[nvm]: https://github.com/andyl/rfx.nvim
+[vsc]: https://github.com/andyl/rfx.vscode
 [src]: https://github.com/doorgan/sourceror
 
 ## Installation
