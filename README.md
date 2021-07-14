@@ -51,6 +51,17 @@ About Rfxi:
 [vsc]: https://github.com/andyl/rfx.vscode
 [src]: https://github.com/doorgan/sourceror
 
+## Support
+
+To ask questions:
+- use the [issue tracker][trk]
+- use the [#refactoring channel][slk] on Elixir Slack
+
+[trk]: https://github.com/andyl/rfxi/issues
+[slk]: https://app.slack.com/client/T03EPRA2X/C026XK7QF60/thread/C068BRD62-1613670248.042000
+
+Developers welcome!
+
 ## Installation
 
 - Clone this repo
