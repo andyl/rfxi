@@ -51,11 +51,12 @@ defmodule RfxCli.CredoRepl do
     opts = """
 
       Commands:
-      - help           - display this help message
-      - suggest        - run and display a Credo analysis
-      - detail <ID>    - show the detail for a Credo Issue
-      - apply <Rfx Id> - apply an Rfx Operation to the filesystem
-      - exit           - quit the repl
+      - help                 - display this help message
+      - credo suggest        - run and display a Credo analysis
+      - credo detail <ID>    - show the detail for a Credo Issue
+      - credo apply <Rfx Id> - apply an Rfx Operation to the filesystem
+      - rfx <command>        - run an RFX command
+      - exit                 - quit the repl
     """
 
     IO.puts(opts)
@@ -63,7 +64,7 @@ defmodule RfxCli.CredoRepl do
     state
   end
 
-  defp run(["detail", issue_id], state) do
+  defp run(["credo", "detail", issue_id], state) do
     with {:ok, issues} <- Map.fetch(state, :credo_enhanced),
          {:ok, issue} <- get_issue(issue_id, issues)
     do
@@ -75,7 +76,7 @@ defmodule RfxCli.CredoRepl do
     state
   end
 
-  defp run(["apply", op_id], state) do
+  defp run(["credo", "apply", op_id], state) do
     
     with {:ok, issues} <- Map.fetch(state, :credo_enhanced),
          [id | _] <- String.split(op_id, "."),  
@@ -90,7 +91,7 @@ defmodule RfxCli.CredoRepl do
     state
   end
 
-  defp run(["suggest"], state) do
+  defp run(["credo", "suggest"], state) do
     results = RfxCli.Util.Credo.run()
     enhanced = results |> augment_credo()
     display = enhanced |> display_credo()
@@ -104,6 +105,11 @@ defmodule RfxCli.CredoRepl do
 
   defp run(["exit"], _state) do
     :halt
+  end
+
+  defp run(["rfx" | command], state) do
+    RfxCli.Base.main(command)
+    state
   end
 
   defp run(cmd, state) do
