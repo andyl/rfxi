@@ -197,8 +197,10 @@ defmodule RfxCli.CredoRepl do
   end
 
   defp render_credo(rows) do
-    [_ | [_ | rest]] = Path.expand(".") |> Path.split()
-    path = "~/#{Enum.join(rest, "/")}"
+    home = Path.expand("~") |> Path.split()
+    current = Path.expand(".") |> Path.split()
+    alt = current -- home
+    path = "~/#{Enum.join(alt, "/")}"
 
     date =
       :calendar.local_time() |> NaiveDateTime.from_erl!() |> Calendar.strftime("%b %d %a %H:%M")
