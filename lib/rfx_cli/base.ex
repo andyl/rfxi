@@ -11,14 +11,39 @@ defmodule RfxCli.Base do
 
   alias RfxCli.Main
 
-  def main(argv) do
+  def main(argv) when is_binary(argv) do
     argv
+    |> OptionParser.split()
+    |> main()
+  end
+
+  def main(argv) do
+    %{argv: argv}
     |> main_core()
     |> print_output()
   end
 
-  def main_core(argv) do
+  def main(argv, initial_state) when is_map(initial_state) do 
+    initial_state
+    |> IO.inspect(label: "ASDFASDF") 
+    |> Map.merge(%{argv: argv})
+    |> main_core()
+    |> print_output()
+  end
+
+  def main_core(argv) when is_binary(argv) do
+    argv
+    |> OptionParser.split()
+    |> main_core()
+  end
+
+  def main_core(argv) when is_list(argv) do
     %{argv: argv}
+    |> main_core()
+  end
+
+  def main_core(initial_state) do
+    initial_state
     |> new_state()
     |> parse()
     |> validate_parse()
@@ -38,7 +63,7 @@ defmodule RfxCli.Base do
   end
 
   def parse(state) do
-    case Main.Parse.run(state.argv) do
+    case Main.Parse.run(state) do
       {:error, msg} -> {:error, msg}
       result -> assign(state, :parse, result)
     end
@@ -100,14 +125,8 @@ defmodule RfxCli.Base do
   end
 
   defp new_state(initial_state) do
-    %{
-      argv: nil,
-      parse: nil,
-      cmd_args: nil,
-      changeset: nil,
-      json: nil
-    }
-    |> Map.merge(initial_state)
+    initial_state
+    |> RfxCli.State.new()
   end
 
   def assign(state, field, value) do

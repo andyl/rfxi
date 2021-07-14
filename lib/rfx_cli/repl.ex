@@ -101,7 +101,7 @@ defmodule RfxCli.Repl do
   end
 
   defp run(["rfx" | command], state) do
-    RfxCli.Base.main(command)
+    RfxCli.Base.main(command, %{repl_mode: true})
     state
   end
 

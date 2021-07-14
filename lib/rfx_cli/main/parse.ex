@@ -2,11 +2,13 @@ defmodule RfxCli.Main.Parse do
   @moduledoc false
 
   def run(argv) when is_binary(argv) do
-    String.split(argv, " ")
+    %{argv: String.split(argv, " ")}
+    |> RfxCli.State.new()
     |> run()
   end
 
-  def run(argv) do
+  def run(state) do
+    argv = state.argv
     haltfun = fn _ -> {:error, :halt} end
     propspec = RfxCli.Argspec.gen()
     optimus = propspec |> Optimus.parse!(argv, haltfun)
