@@ -17,13 +17,8 @@ defmodule RfxCli.Main.ParseTest do
   end
 
   describe "#run with valid cmd" do
-    test "cmd: RfxRepl" do
-      result = Parse.run("RfxRepl")
-      assert result  
-    end
-
-    test "cmd: CredoRepl" do
-      result = Parse.run("CredoRepl")
+    test "cmd: Repl" do
+      result = Parse.run("Repl")
       assert result  
     end
 
