@@ -1,11 +1,20 @@
 defmodule RfxCli.Main.ExecuteCommand do
   @moduledoc false
 
-  def run({:error, stage, msg}) do
-    {:error, stage, msg}
+  alias RfxCli.State
+
+  def run({:error, msg}) do
+    {:error, msg}
   end
 
-  def run(cmd_args) do
+  def run(state) do 
+    case execute(state.command_args) do 
+      {:error, msg} -> {:error, msg}
+      result -> State.assign(state, :changeset, result)
+    end
+  end
+
+  def execute(cmd_args) do
     case cmd_args[:launch_cmd] do
       :repl -> 
         RfxCli.Repl.start()

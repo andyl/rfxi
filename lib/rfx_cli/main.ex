@@ -1,4 +1,4 @@
-defmodule RfxCli.Base do
+defmodule RfxCli.Main do
   
   # READING FROM STDIO
   # defp get_stdin do
@@ -9,18 +9,52 @@ defmodule RfxCli.Base do
   #   end
   # end
 
+  @moduledoc """
+  Main CLI module.
+  """
+
+  alias RfxCli.Main
+  alias RfxCli.State
   alias RfxCli.Main
 
-  def main(argv) do
+  def main(argv), do: run(argv)
+  def main(argv, state), do: run(argv, state)
+
+  def run(argv) when is_binary(argv) do
     argv
-    |> main_core()
+    |> OptionParser.split()
+    |> run()
+  end
+
+  def run(argv) do
+    %{argv: argv}
+    |> run_core()
     |> print_output()
   end
 
-  def main_core(argv) do
+  def run(argv, initial_state) when is_map(initial_state) do 
+    initial_state
+    |> Map.merge(%{argv: argv})
+    |> run_core()
+    |> print_output()
+  end
+
+  def run_core(argv) when is_binary(argv) do
+    argv
+    |> OptionParser.split()
+    |> run_core()
+  end
+
+  def run_core(argv) when is_list(argv) do
     %{argv: argv}
+    |> run_core()
+  end
+
+  def run_core(initial_state) do
+    initial_state
     |> new_state()
-    |> parse()
+    |> gen_optimus()
+    |> parse_argv()
     |> validate_parse()
     |> extract_command()
     |> validate_command()
@@ -28,20 +62,29 @@ defmodule RfxCli.Base do
     |> encode_changeset()
   end
 
-  def parse({:error, msg}), do: {:error, msg}
+  def new_state(initial_state) do
+    initial_state
+    |> State.new()
+  end
 
-  def parse(input) when is_binary(input) do
+  def gen_optimus(state) do 
+    state
+    |> Main.GenOptimus.run()
+  end
+
+  def parse_argv({:error, msg}), do: {:error, msg}
+
+  def parse_argv(input) when is_binary(input) do
     argv = input |> OptionParser.split()
     %{argv: argv}
     |> new_state()
-    |> parse()
+    |> gen_optimus()
+    |> parse_argv()
   end
 
-  def parse(state) do
-    case Main.Parse.run(state.argv) do
-      {:error, msg} -> {:error, msg}
-      result -> assign(state, :parse, result)
-    end
+  def parse_argv(state) do
+    state
+    |> Main.ParseArgv.run()
   end
 
   def validate_parse(state) do
@@ -51,10 +94,8 @@ defmodule RfxCli.Base do
   def extract_command({:error, msg}), do: {:error, msg}
 
   def extract_command(state) do
-    case Main.ExtractCommand.run(state.parse) do
-      {:error, msg} -> {:error, msg}
-      result -> assign(state, :cmd_args, result)
-    end
+    state
+    |> Main.ExtractCommand.run()
   end
 
   def validate_command(state) do
@@ -64,10 +105,8 @@ defmodule RfxCli.Base do
   def execute_command({:error, msg}), do: {:error, msg}
 
   def execute_command(state) do
-    case Main.ExecuteCommand.run(state.cmd_args) do
-      {:error, msg} -> {:error, msg}
-      result -> assign(state, :changeset, result)
-    end
+    state 
+    |> Main.ExecuteCommand.run()
   end
 
   def encode_changeset({:error, msg}), do: {:error, msg}
@@ -82,13 +121,13 @@ defmodule RfxCli.Base do
       |> Enum.map(&unstruct/1)
       |> Jason.encode!()
 
-    assign(state, :json, json)
+    State.assign(state, :json, json)
   end
 
   def print_output({:error, msg}), do: {:error, msg}
 
   def print_output(state) do
-    case state.cmd_args[:op_oneline] do
+    case state.command_args[:op_oneline] do
       true -> state.json |> IO.puts()
       false -> state.json |> Jason.Formatter.pretty_print() |> IO.puts()
     end
@@ -99,18 +138,4 @@ defmodule RfxCli.Base do
     |> Map.from_struct()
   end
 
-  defp new_state(initial_state) do
-    %{
-      argv: nil,
-      parse: nil,
-      cmd_args: nil,
-      changeset: nil,
-      json: nil
-    }
-    |> Map.merge(initial_state)
-  end
-
-  def assign(state, field, value) do
-    Map.merge(state, %{field => value})
-  end
 end

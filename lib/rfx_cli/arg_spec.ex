@@ -1,13 +1,25 @@
-defmodule RfxCli.Argspec do
-  def gen do
-    Optimus.new!(common() ++ subcommands())
-  end
+defmodule RfxCli.ArgSpec do
 
-  def common do
+  # def gen(state) do
+  #   state
+  #   |> args()
+  #   |> Optimus.new!()
+  # end
+  #
+  # def args(state) do 
+  #   base_opts() ++ subcommands(state)
+  # end 
+  
+  @moduledoc """
+  Returns config and subcommands for Optimus options parser.
+  """
+
+  def base_config do
     [
       name: "rfx",
       version: "0.0.1",
       description: "Refactoring operations for Elixir Code.",
+      author: "NA",
       about: """
       """,
       allow_unknown_args: false,
@@ -43,7 +55,7 @@ defmodule RfxCli.Argspec do
     ]
   end
 
-  def subcommand_options do
+  def operation_config do
     [
       args: [
         target: [
@@ -90,9 +102,4 @@ defmodule RfxCli.Argspec do
     ]
   end
 
-  def subcommands do
-    [
-      subcommands: RfxCli.Oplst.subcommands(RfxCli.Oplst.all_ops())
-    ]
-  end
 end
