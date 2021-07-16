@@ -16,31 +16,44 @@ defmodule RfxCli.Main.ParseArgvTest do
 
   describe "#run" do
     test "help" do
-      fun = fn -> ParseArgv.run("--help") end
+      fun = fn -> ParseArgv.test_run("--help") end
       result = capture_io(fun) 
-      # IO.puts(result)
       assert result =~ "rfx"
     end
 
     test "help proto.no_op" do
-      fun = fn -> ParseArgv.run("help proto.no_op") end
+      fun = fn -> ParseArgv.test_run("help proto.no_op") end
       assert capture_io(fun) =~ "proto.no_op"
+    end
+  end
+
+  describe "#run with initial state" do
+    test "help no_repl" do 
+      fun = fn -> ParseArgv.test_run(%{argv: ["--help"]}) end
+      result = capture_io(fun) 
+      assert result =~ "Repl"
+    end
+
+    test "help with_repl" do 
+      fun = fn -> ParseArgv.test_run(%{argv: ["--help"], in_repl?: true}) end
+      result = capture_io(fun) 
+      refute result =~ "Repl"
     end
   end
 
   describe "#run with valid cmd" do
     test "cmd: Repl" do
-      result = ParseArgv.run("Repl")
+      result = ParseArgv.test_run("Repl")
       assert result  
     end
 
     test "cmd: Server" do
-      result = ParseArgv.run("Server")
+      result = ParseArgv.test_run("Server")
       assert result 
     end
 
     test "subcommand" do
-      result = ParseArgv.run("proto.no_op target")
+      result = ParseArgv.test_run("proto.no_op target")
       assert result 
     end
   end

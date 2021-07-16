@@ -4,7 +4,14 @@ defmodule RfxCli.Main.ParseArgv do
   alias RfxCli.State
   alias RfxCli.Main.GenOptimus
 
-  def run(argv) when is_binary(argv) do
+  def test_run(state) when is_map(state) do 
+    state
+    |> State.new()
+    |> GenOptimus.run()
+    |> run()
+  end
+
+  def test_run(argv) when is_binary(argv) do
     %{argv: OptionParser.split(argv)}
     |> State.new()
     |> GenOptimus.run()

@@ -10,7 +10,7 @@ defmodule RfxCli.Main.ExecuteCommandTest do
   describe "command option" do
     test "cmd: Server" do
       state =
-        ParseArgv.run("Server")
+        ParseArgv.test_run("Server")
         |> ExtractCommand.run()
 
       fun = fn -> ExecuteCommand.run(state) end
@@ -20,7 +20,7 @@ defmodule RfxCli.Main.ExecuteCommandTest do
 
     test "cmd: Repl" do
       cmd_args =
-        ParseArgv.run("Repl")
+        ParseArgv.test_run("Repl")
         |> ExtractCommand.run()
 
       fun = fn -> ExecuteCommand.run(cmd_args) end
@@ -32,7 +32,7 @@ defmodule RfxCli.Main.ExecuteCommandTest do
   describe "subcommand options" do
     test "no_op" do
       state =
-        ParseArgv.run("proto.no_op tgt")
+        ParseArgv.test_run("proto.no_op tgt")
         |> ExtractCommand.run()
         |> ExecuteCommand.run()
 
@@ -43,7 +43,7 @@ defmodule RfxCli.Main.ExecuteCommandTest do
 
     test "comment_add" do
       state =
-        ParseArgv.run("proto.comment_add :ok")
+        ParseArgv.test_run("proto.comment_add :ok")
         |> ExtractCommand.run()
         |> ExecuteCommand.run()
 

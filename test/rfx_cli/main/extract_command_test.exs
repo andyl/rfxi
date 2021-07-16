@@ -7,7 +7,7 @@ defmodule RfxCli.Main.ExtractCommandTest do
   describe "command option" do
     test "cmd: Server" do
       result =
-        ParseArgv.run("Server")
+        ParseArgv.test_run("Server")
         |> ExtractCommand.run()
 
       assert result 
@@ -18,7 +18,7 @@ defmodule RfxCli.Main.ExtractCommandTest do
 
     test "cmd: Repl" do
       result =
-        ParseArgv.run("Repl")
+        ParseArgv.test_run("Repl")
         |> ExtractCommand.run()
 
       assert result
@@ -31,7 +31,7 @@ defmodule RfxCli.Main.ExtractCommandTest do
   describe "subcommand options" do
     test "no_op" do
       result =
-        ParseArgv.run("proto.no_op tgt")
+        ParseArgv.test_run("proto.no_op tgt")
         |> ExtractCommand.run()
 
       assert result
