@@ -20,7 +20,7 @@ defmodule RfxiWeb.RfxSocket do
   end
 
   def handle_in({text, _opts}, state) do
-    output = RfxCli.Base.main_core(text).json
+    output = RfxCli.Main.run_core(text).json
     {:reply, :ok, {:text, output}, state}
   end
 
