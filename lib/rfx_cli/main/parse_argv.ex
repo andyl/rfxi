@@ -18,11 +18,11 @@ defmodule RfxCli.Main.ParseArgv do
   def run(state) do
     haltfun = fn _ -> {:error, :halt} end
 
-    optimus =
+    parse_result =
       state.optimus_data
       |> Optimus.parse!(state.argv, haltfun)
 
-    case optimus do
+    case parse_result do
       {:error, msg} -> {:error, msg}
       parse_data -> State.assign(state, :parse_result, parse_data)
     end

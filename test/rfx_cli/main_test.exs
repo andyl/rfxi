@@ -7,7 +7,8 @@ defmodule RfxCli.MainTest do
   describe "#parse_argv" do
     test "help" do
       fun = fn -> Main.parse_argv("--help") end
-      assert capture_io(fun) =~ "rfx"
+      result = capture_io(fun) 
+      assert result =~ "rfx"
     end
 
     test "help proto.no_op" do
