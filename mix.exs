@@ -29,8 +29,7 @@ defmodule Rfxi.MixProject do
 
   def escript do
     [
-      main_module: RfxCli.Base,
-      # main_module: RfxCli.Server, 
+      main_module: RfxCli.Main,
       name: "rfx" 
     ]
   end

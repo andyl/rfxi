@@ -19,15 +19,26 @@ defmodule RfxCli.Main.ExtractCommand do
   ]
   """
 
-  def run({:error, stage, msg}) do
-    {:error, stage, msg}
+  alias RfxCli.State
+
+  def run({:error, msg}) do
+    {:error, msg}
   end
 
-  def run({[subcmd], parse = %Optimus.ParseResult{}}) do
+  def run(state) do  
+    case extract(state.parse_result) do
+      {:error, msg} -> {:error, msg}
+      result -> State.assign(state, :command_args, result)
+    end
+  end
+
+  # This pattern is expressed when a subcommand is used.
+  def extract({[subcmd], parse = %Optimus.ParseResult{}}) do
     Keyword.merge(default_args(), subcmd_args(subcmd, parse))
   end
 
-  def run(parse = %Optimus.ParseResult{}) do
+  # This pattern is expressed when no subcommand is used (eg "rfx --help")
+  def extract(parse = %Optimus.ParseResult{}) do
     Keyword.merge(default_args(), cmd_args(parse))
   end
 
@@ -84,7 +95,7 @@ defmodule RfxCli.Main.ExtractCommand do
   defp converts_for(parse_data) do
     parse_data
     |> Map.fetch!(:options)
-    |> Map.fetch!(:convert)
+    |> Map.get(:convert, "") 
     |> split()
     |> Enum.map(&String.to_atom/1)
   end
